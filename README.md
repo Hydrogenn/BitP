@@ -23,7 +23,7 @@ The debug, inputs and outputs all involve decimal numbers even though the intern
 Future versions will show debug info in hex, and actual values as characters (without the new line).
 
 
-Commands are below.
+##Commands
 
 BIN | HEX | Char | Name | Function
 ------ | --- | --- | ------------- | ----------------------------------------------------
