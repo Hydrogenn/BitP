@@ -38,18 +38,24 @@ BIN | HEX | CHAR | NAME | FUNCTION
 1110 | E | ^ | XOR | Performs a bitwise EXCLUSIVE OR with the first and second operands.
 1111 | F | % | EXTERN | Handles input and output magically 5
 1: 'Tack' is the best way I can describe what it does. An example would be:
+
 $8 on disc value 0 becomes 0100 (8 in hex or dec)
 but $8 on disc value 0001 becomes 0001 1000 (18 in hex, 24 in dec)
+
 2: A to E are OPERATIONS, and all follow some common behavior.
  - The last disc value is used as the first operand.
  - The current disc value is used as the second operand.
  - The operation's result is then stored on the first operand.
  - The second operand is discarded and set as zero.
  - Last, the pointer readjusts to look at the result, or shifted back by 1.
+ 
 3: Ranges above 111111, which handles 64 bits, will have all but the last 6 ignored.
+
 4: Despite '|' being a conventional OR operation, '/' makes more sense and does not have to compete with division.
+
 5: No really, if you intend to make an alternative compiler I don't care what you do with this thing.
-It handles input and output. But sometimes you need more than just taking and spitting out lists of characters.
-Sometimes, you might want to have this output to a part on a screen, or get where the mouse is.
+
 The last bits indicate where the value is being output to, or what input to get a value from. That's the rule. No more, no less.
 In THIS compiler, values ending in a '1' will take an input number, whereas values ending in a '0' will output the number.
+
+Actually, please don't make alternative compilers (yet). The language isn't complete, and even minor changes will break each and every script that came before it.
