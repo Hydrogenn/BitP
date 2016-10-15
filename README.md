@@ -44,9 +44,9 @@ BIN | HEX | Char | Name | Function
 `1110` | `E` | `^` | XOR | Performs a bitwise EXCLUSIVE OR with the first and second operands.
 `1111` | `F` | `%` | EXTERN | Handles input and output magically<sup>5</sup>.
 <sup>1</sup>'Tack' is the best way I can describe what it does. Examples:
- - `$8` on disc value 0 becomes 0100 (8 in hex or dec)
- - `$8` on disc value 0001 becomes 0001 1000 (18 in hex, 24 in dec)
- - `$8$4` will be tack 8 then 4, becoming 1000 0100, or 84 in hex. Notice something?
+ - `$8` on disc value `0000` becomes `0100` (`8` in hex and dec)
+ - `$8` on disc value `0001` becomes `0001 1000` (`18` in hex, 24 in dec)
+ - `$8$F` will be tack 8 then F, becoming `1000 1111`, or `8F` in hex. Notice something?
 
 A to E are OPERATIONS, and all follow some common behavior.
  - The previous disc value is used as the first operand.
