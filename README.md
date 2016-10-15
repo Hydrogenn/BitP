@@ -1,4 +1,4 @@
-##BitP v0.1.0
+##BitP v0.2.0
 
 This is an interpreter for a new language, BitP, written in C++.
 It is designed to resemble (and be practical as) an assembly language, but compacted into 16 commands so that a human can understand it more easily.
