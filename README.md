@@ -1,7 +1,7 @@
 BitP v0.1.0
 
 This is an interpreter for a new language, BitP, written in C++.
-It is designed to resemble an assembly language, but compacted into 16 commands so that a human can understand it more easily.
+It is designed to resemble (and be practical as) an assembly language, but compacted into 16 commands so that a human can understand it more easily.
 
 The C++ code should be legible enough to understand what's going on, but I'll try to give one in English anyway. It's below.
 
