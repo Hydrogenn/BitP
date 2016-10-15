@@ -37,12 +37,12 @@ BIN | HEX | Char | Name | Function
 `0111` | `7` | `#` | DESYNC | Nothing, right now. It's intended to do some multithreading stuff, but it doesn't right now.
 `1000` | `8` | `,` | PUSH | Look at the next disc value.
 `1001` | `9` | `.` | COMMIT | Used in conjunction with `-` SELECT. It overwrites the range remembered from SELECT with the disc value.
-`1010` | `A` | `-` | SELECT | This will look at the script and take a range of bits; the range's first value is the first operand, and the range's length<sup>2</sup> is the second<sup>3</sup>. It remembers the value for later use.
+`1010` | `A` | `-` | SELECT | This will look at the script and take a range of bits; the range's first value is the first operand, and the range's length<sup>2</sup> is the second. It remembers the value for later use.
 `1011` | `B` | `_` | READ | Functions identically to SELECT, but does not remember the value for use with `.` COMMIT.
 `1100` | `C` | `&` | AND | Performs a bitwise AND with the first and second operands.
-`1101` | `D` | `/`<sup>4</sup> | OR | Performs a bitwise OR with the first and second operands.
+`1101` | `D` | `/`<sup>3</sup> | OR | Performs a bitwise OR with the first and second operands.
 `1110` | `E` | `^` | XOR | Performs a bitwise EXCLUSIVE OR with the first and second operands.
-`1111` | `F` | `%` | EXTERN | Handles input and output magically<sup>5</sup>.
+`1111` | `F` | `%` | EXTERN | Handles input and output magically<sup>4</sup>.
 <sup>1</sup>'Tack' is the best way I can describe what it does. Examples:
  - `$8` on disc value `0000` becomes `0100` (`8` in hex and dec)
  - `$8` on disc value `0001` becomes `0001 1000` (`18` in hex, 24 in dec)
@@ -56,12 +56,11 @@ BIN | HEX | Char | Name | Function
  - Last, the pointer readjusts to look at the result, or shifted back by 1.
 
 <sup>2</sup>This really means how many *more* bits are being looked at, so if the second operand is `11` then 4 bits will be taken, and if it is `0` then 1 bit will be taken.
+Values above `111111`, which handles 64 bits, will have all but the last 6 bits ignored.
 
-<sup>3</sup>Ranges above `111111`, which handles 64 bits, will have all but the last 6 bits ignored.
+<sup>3</sup>Despite `|` being a conventional OR operation, `/` makes more sense and does not have to compete with division.
 
-<sup>4</sup>Despite `|` being a conventional OR operation, `/` makes more sense and does not have to compete with division.
-
-<sup>5</sup>No really, if you intend to make an alternative compiler I don't care what you do with this thing.
+<sup>4</sup>No really, if you intend to make an alternative compiler I don't care what you do with this thing.
 
 The last bits indicate where the value is being output to, or what input to get a value from. That's the rule. No more, no less.
 In THIS compiler, values ending in a `1` will take an input number, whereas values ending in a `0` will output the number.
