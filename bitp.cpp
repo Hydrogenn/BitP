@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <bitset>
 using namespace std;
 
@@ -16,14 +17,23 @@ unsigned long extern_function(unsigned long input);
 unsigned short r(unsigned short value);
 
 int main() {
-	main:
 	bitset<l> compileScript(string script);
 	bitset<l> script;
-	string scriptString = setScript();
+	ifstream scriptFile ("script.bp");
+	string scriptString;
+	string line;
+	if (scriptFile.is_open())
+	{
+		while ( getline (scriptFile,line) )
+		{
+			scriptString += line + '\n';
+		}
+		scriptFile.close();
+	}
+	else return 1;
 	script = compileScript(scriptString);
 	cout << script << "\n";
 	runScript(script);
-	goto main;
 }
 
 string setScript() {
@@ -35,6 +45,7 @@ string setScript() {
 
 bitset<l> compileScript(string script) {
 	bitset<l> compiled;
+	int i2 = 0;
 	for(int i = 0; i < script.length(); ++i) {
 		char c = script.at(i);
 		bool masked = false;
@@ -110,8 +121,11 @@ bitset<l> compileScript(string script) {
 		}
 		if (!masked) {
 			for (short o = 0; o < 4; ++ o) {
-		    	compiled[4*i+o] = mask[o];
+		    	compiled[4*(i-i2)+o] = mask[o];
 			}
+		}
+		else {
+			++i2;
 		}
 	}
 	return compiled;
