@@ -5,6 +5,7 @@ It is designed to resemble an assembly language, but compacted into 16 commands 
 
 The C++ code should be legible enough to understand what's going on, but I'll try to give one in English anyway. It's below.
 
+
 BitP is structured to contain only two values: an array of 8 values (disc), and the script itself.
 
 Other values exist, but are indicitive of state more than values, such as whether to ignore the code being read because of, say, an IF loop.
@@ -15,13 +16,16 @@ The disc will loop on itself, hence the name 'disc'. Going to the 'next' value i
 
 The latter can be edited while running. It is recommended to store long-term values in the script, and use the disc for operations only. There is nothing *requiring* this, if you want to really want a, uh, challenge.
 
+
 The script you enter is not the script that is interpreted. Future versions will have the compiler and bit interpreter seperate, but right now they are combined.
 
 Each command is compiled into a binary value. If the value isn't a valid command (or a hexadecimal character) it is ignored.
 
+
 The debug, inputs and outputs all involve decimal numbers. That is an accidental (albeit useful) abstraction.
 
 Future versions will involve outputting debug data in hex, and actual values as characters (without the new line).
+
 
 Commands are below.
 
