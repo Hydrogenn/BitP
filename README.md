@@ -48,7 +48,7 @@ BIN | HEX | Char | Name | Function
  - `$8` on disc value `0001` becomes `0001 1000` (`18` in hex, 24 in dec)
  - `$8$F` will be tack `8` then `F`, becoming `1000 1111`, or `8F` in hex. Notice something?
 
-A to E are OPERATIONS, and all follow some common behavior.
+`A` to `E` are OPERATIONS, and all follow some common behavior.
  - The previous disc value is used as the first operand.
  - The current disc value is used as the second operand.
  - The operation's result is then stored on the first operand.
