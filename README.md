@@ -1,4 +1,4 @@
-##BitP v0.2.0
+##BitP v0.2.1
 
 This is an interpreter for a new language, BitP, written in C++.
 It is designed to resemble (and be practical as) an assembly language, but compacted into 16 commands so that a human can understand it more easily.
@@ -19,8 +19,10 @@ The script you enter is not the script that is interpreted. Future versions will
 Each command is compiled into a binary value. If the value isn't a valid command (or a hexadecimal character) it is ignored by the compiler.
 
 
-The debug, inputs and outputs all involve decimal numbers even though the internal values are actually binary bits. That is an accidental (albeit useful) abstraction.
-Future versions will show debug info in hex, and actual values as characters (without the new line).
+The inputs and outputs all involve decimal numbers even though the internal values are actually binary bits.
+That is an accidental (albeit useful) abstraction.
+Future versions will handle i/o as characters (without the new line).
+The debug, however, displays in hex.
 
 
 ##Commands

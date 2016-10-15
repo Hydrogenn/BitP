@@ -45,6 +45,7 @@ string setScript() {
 
 bitset<l> compileScript(string script) {
 	bitset<l> compiled;
+	cout << hex << uppercase;
 	int i2 = 0;
 	for(int i = 0; i < script.length(); ++i) {
 		char c = script.at(i);
@@ -267,6 +268,7 @@ bitset<l> setRange(bitset<l> data, unsigned long value, int i, short length) {
 	return data;
 }
 unsigned long extern_function(unsigned long input) {
+	cout << dec << nouppercase;
 	unsigned long output = 0;
 	if (input%2) { //if input ends in a 1
 		cin >> output;
@@ -274,6 +276,7 @@ unsigned long extern_function(unsigned long input) {
 	else { //if input ends in a 0
 		cout << (input>>1) << "\n";
 	}
+	cout << hex << uppercase;
 	return output;
 }
 unsigned short r(unsigned short value) {
