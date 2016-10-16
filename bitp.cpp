@@ -13,7 +13,7 @@ void runScript(bitset<l> script);
 short at(bitset<l> data, int i);
 unsigned long range(bitset<l> data, int i, short length);
 bitset<l> setRange(bitset<l> data, unsigned long value, int i, short length);
-unsigned long extern_function(unsigned long input);
+unsigned long extern_function(unsigned long input, string &previous);
 unsigned short r(unsigned short value);
 
 int main() {
@@ -64,10 +64,10 @@ bitset<l> compileScript(string script) {
 			case '>':
 				mask = 3;
 				break;
-			case ';':
+			case ':':
 				mask = 4;
 				break;
-			case ':':
+			case '~':
 				mask = 5;
 				break;
 			case '@':
@@ -140,6 +140,7 @@ void runScript(bitset<l> script) {
 	unsigned short v = 0; //points to the value being currently used
 	//r(v) gets the value behind v, handling overflow
 	unsigned long target[2] = {0,0}; //stores the values to overwrite when using '-' SELECT and '.' COMMIT
+	string previous = ""; //used to handle inputs with more than one character
 	while(pointer < l) {
 		if (value) {
 			if (reading) {
@@ -162,21 +163,18 @@ void runScript(bitset<l> script) {
 				case 3: //>
 					variable[v]>>=1;
 					break;
-				case 4: //;
-					reading = true;
-					fill_n(variable,8,0);
-					break;
-				case 5: //:
-					if (variable[v] == 0) {
+				case 4: //:
+					if (!reading)
+						reading = true;
+					else if (variable[v] == 0) {
 						reading = false;
-					} else {
-						fill_n(variable,8,0);
 					}
 					break;
+				case 5: //~
+					variable[v] = ~variable[v];
 				case 6: //@
 					pointer = variable[v]*4;
 					pointer -= 4; //this cancels out the addition later, even if there is overflow.
-					fill_n(variable,8,0);
 					break;
 				case 7: //#
 					//TODO bitp.desync();
@@ -217,13 +215,13 @@ void runScript(bitset<l> script) {
 					v = r(v);
 					break;
 				case 15: //%
-					variable[v] = extern_function(variable[v]);
+					variable[v] = extern_function(variable[v],previous);
 					break;
 				default:
 					break;
 			}
 		}
-		//<debug>
+		/*//<debug>
 		for (short i=0;i<=7;i++) {
 			if (i==v)
 				cout << "[" << variable[i] << "] : ";
@@ -241,7 +239,7 @@ void runScript(bitset<l> script) {
 		cout << "=" << range(script,target[0],target[1]);
 		cout << "]";
 		cout << endl;
-		//</debug>
+		//</debug>*/
 		pointer+=4;
 	}
 }
@@ -267,14 +265,19 @@ bitset<l> setRange(bitset<l> data, unsigned long value, int i, short length) {
 	}
 	return data;
 }
-unsigned long extern_function(unsigned long input) {
+unsigned long extern_function(unsigned long input, string &previous) {
 	cout << dec << nouppercase;
-	unsigned long output = 0;
-	if (input%2) { //if input ends in a 1
-		cin >> output;
+	unsigned long output = input;
+	if (input) { //if there is input
+		cout << (char)(input);
 	}
-	else { //if input ends in a 0
-		cout << (input>>1) << "\n";
+	else { //if there isn't input
+		if (!previous.length()) { //if there is no length for previous
+			cin >> previous;
+			previous += '\0';
+		}
+		output = previous.at(0);
+		previous = previous.substr(1);
 	}
 	cout << hex << uppercase;
 	return output;

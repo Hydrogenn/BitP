@@ -1,4 +1,4 @@
-##BitP v0.2.1
+##BitP v0.3.0
 
 This is an interpreter for a new language, BitP, written in C++.
 It is designed to resemble (and be practical as) an assembly language, but compacted into 16 commands so that a human can understand it more easily.
@@ -19,10 +19,8 @@ The script you enter is not the script that is interpreted. Future versions will
 Each command is compiled into a binary value. If the value isn't a valid command (or a hexadecimal character) it is ignored by the compiler.
 
 
-The inputs and outputs all involve decimal numbers even though the internal values are actually binary bits.
-That is an accidental (albeit useful) abstraction.
-Future versions will handle i/o as characters (without the new line).
-The debug, however, displays in hex.
+Output and Input have recently been updated to handle characters, as originally intended.
+The debug displays hex values.
 
 
 ##Commands
@@ -33,8 +31,8 @@ BIN | HEX | Char | Name | Function
 `0001` | `1` | `+` | SET | The last bit of the disc value becomes a 1.
 `0010` | `2` | `<` | LEFT-SHIFT | Does a single left shift on the disc value.
 `0011` | `3` | `>` | RIGHT-SHIFT | Does a single right shift on the disc value.
-`0100` | `4` | `;` | LINE-BREAK | Clears all values on the disc.
-`0101` | `5` | `:` | IF | If the value is zero, skip all commands until a `;` LINE-BREAK is reached. Otherwise, clear all values on the disc.
+`0100` | `4` | `:` | IF | If the disc value is zero, skip all commands until another `:` IF is reached. It has special case handling to exclude values placed after a value.
+`0101` | `5` | `~` | COMPLEMENT | Set the disc value to the complement of itself.
 `0110` | `6` | `@` | GOTO | Jumps the pointer in the script to the location at the disc value. It also clears all values on the disc.
 `0111` | `7` | `#` | DESYNC | Nothing, right now. It's intended to do some multithreading stuff, but it doesn't right now.
 `1000` | `8` | `,` | PUSH | Look at the next disc value.
@@ -65,6 +63,7 @@ Values above `111111`, which handles 64 bits, will have all but the last 6 bits 
 <sup>4</sup>No really, if you intend to make an alternative compiler I don't care what you do with this thing.
 
 The last bits indicate where the value is being output to, or what input to get a value from. That's the rule. No more, no less.
-In THIS compiler, values ending in a `1` will take an input number, whereas values ending in a `0` will output the number.
+In *this* compiler, a non-null value will display that ASCII character and leave the disc value unchanged. A null value, however, takes an input string. It sets the disc value to the first character's ASCII value.
+If input is called later, then it will look at the *next* character in the input string. A null value is added to all input strings. If all values are exhausted, another input string is requested.
 
 Actually, please don't make alternative compilers (yet). The language isn't complete, and even minor changes will break each and every script that came before it.

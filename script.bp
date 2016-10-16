@@ -2,18 +2,23 @@ this is a demonstration script
 the compiler will pick up on any of the sixteen special characters so there are no special characters in these comments
 values a to f are are also picked up if uppercase
 even if these characters do nothing such as a comma at the beginning of a script it will make gotos and variable storage unneccessarily long
-() and ' and "something" and ! and * all work fine to name a few
+() and ' and "something" and ! and ; and * all work fine to name a few
 careful with the ' character because later compilers may take it to be a comment
 
 all instructions have been commented
 these comments make compilation slower which right now is done at the same time as interpretation
 if speed is of concern do not throw away the comments because they are too important
 
-$3$7$8,$F-&+%.; get value at three seven eight length sixteen from user input
-$3$8$8,$F-&+%.; do the same for value at three eight eight lenth sixteen
-$3$9$8,$F-&$3$7$8,$F_,$3$8$8,$F_^.; assign three nine eight length sixteen to (three seven eight xor three eight eight)
-$3$8$8,$F-,$3$7$8,$F_&.; reassign three eight eight same length as itself bitwise and three seven eight
-$3$7$8,$F-&$3$9$8,$F_.; copy the value of three nine eight to three seven eight
-$3$8$8,$F-<.: test if three eight eight (which is the remainder) is not zero as well as left shifting it one for the next operation
-$1$E@; goto the third line if so (one fifteen points to a character and not the third line for reference)
-$3$7$8,$F_<%;@ print out three seven eight (the value) and goto the start
+$4$8%& H
+$6$5%& e
+$6$C%%& ll
+$6$F%& o
+$2$0%& (space)
+$5$7%& W
+$6$F%& o
+$7$2%& r
+$6$C%& l
+$6$4%& d
+$2$1%& !
+$A%& (new line)
+% null values indicate input and the only reason we use it is to keep the console window open
