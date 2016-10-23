@@ -1,4 +1,5 @@
 this is a demonstration script
+it performs a rot thirteen shift on any characters
 the compiler will pick up on any of the sixteen special characters so there are no special characters in these comments
 values a to f are are also picked up if uppercase
 even if these characters do nothing such as a comma at the beginning of a script it will make gotos and variable storage unneccessarily long

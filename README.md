@@ -18,7 +18,7 @@ The disc will loop on itself, hence the name 'disc'. Going to the 'next' value i
 'Disc value' is the value in said disc that is being looked at and edited.
 
 The script itself can be edited while running. It is recommended to store long-term values in the script, and use the disc for operations only.
-There is nothing *requiring* this, but I personally find it
+There is nothing *requiring* this, but I personally find it:
  - Easier to read
  - More stable, as all values can be implied as zero with a clean disc
 
