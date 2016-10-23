@@ -7,7 +7,7 @@ using namespace std;
 //'#' is rarely, if ever used.
 //';' can be replicated by simply having clean code.
 //'%' does too many things at once, supposedly being able to handle multiple inputs and outputs. There does not seem to be much viable alternative, however.
-int const l = 1024;
+int const l = 4096;
 string setScript();
 void runScript(bitset<l> script);
 short at(bitset<l> data, int i);
@@ -64,16 +64,16 @@ bitset<l> compileScript(string script) {
 			case '>':
 				mask = 3;
 				break;
-			case ':':
+			case '[':
 				mask = 4;
 				break;
-			case '~':
+			case ']':
 				mask = 5;
 				break;
 			case '@':
 				mask = 6;
 				break;
-			case '#':
+			case '~':
 				mask = 7;
 				break;
 			case ',':
@@ -141,7 +141,29 @@ void runScript(bitset<l> script) {
 	//r(v) gets the value behind v, handling overflow
 	unsigned long target[2] = {0,0}; //stores the values to overwrite when using '-' SELECT and '.' COMMIT
 	string previous = ""; //used to handle inputs with more than one character
-	while(pointer < l) {
+	
+	while(pointer < l) { // ---------------- BEGIN LOOP
+	
+		/*<debug> this code is commented out in the default compilation.
+		for (short i=0;i<=7;i++) {
+			if (i==v)
+				cout << "[" << variable[i] << "] : ";
+			else
+				cout << variable[i] << " : ";
+		}
+		if (pointer<l)
+			cout << "*" << pointer/4;
+		cout << (reading?"..":"//");
+		cout << (value?"$ ":". ");
+		if (pointer<l)
+			cout << at(script,pointer);
+		cout << " [" << target[0];
+		cout << "-" << target[1];
+		cout << "=" << range(script,target[0],target[1]);
+		cout << "]";
+		cout << endl;
+		//</debug>*/
+	
 		if (value) {
 			if (reading) {
 				variable[v]<<=4;
@@ -149,7 +171,7 @@ void runScript(bitset<l> script) {
 			}
 			value = false;
 		}
-		else if (reading || at(script,pointer)==0 || at(script,pointer)==4 || at(script,pointer)==5) {
+		else if (reading || at(script,pointer)==0 || at(script,pointer)==5) {
 			switch (at(script,pointer)) {
 				case 0: //$
 					value = true;
@@ -163,21 +185,20 @@ void runScript(bitset<l> script) {
 				case 3: //>
 					variable[v]>>=1;
 					break;
-				case 4: //:
-					if (!reading)
-						reading = true;
-					else if (variable[v] == 0) {
+				case 4: //[
+					if (variable[v] == 0) {
 						reading = false;
 					}
 					break;
-				case 5: //~
-					variable[v] = ~variable[v];
+				case 5: //]
+					reading = true;
+					break;
 				case 6: //@
 					pointer = variable[v]*4;
 					pointer -= 4; //this cancels out the addition later, even if there is overflow.
 					break;
-				case 7: //#
-					//TODO bitp.desync();
+				case 7: //~
+					variable[v] = ~variable[v];
 					break;
 				case 8: //,
 					++v;
@@ -221,25 +242,6 @@ void runScript(bitset<l> script) {
 					break;
 			}
 		}
-		/*//<debug>
-		for (short i=0;i<=7;i++) {
-			if (i==v)
-				cout << "[" << variable[i] << "] : ";
-			else
-				cout << variable[i] << " : ";
-		}
-		if (pointer<l)
-			cout << "*" << pointer/4;
-		cout << (reading?"..":"//");
-		cout << (value?"$ ":". ");
-		if (pointer<l)
-			cout << at(script,pointer);
-		cout << " [" << target[0];
-		cout << "-" << target[1];
-		cout << "=" << range(script,target[0],target[1]);
-		cout << "]";
-		cout << endl;
-		//</debug>*/
 		pointer+=4;
 	}
 }
@@ -273,7 +275,7 @@ unsigned long extern_function(unsigned long input, string &previous) {
 	}
 	else { //if there isn't input
 		if (!previous.length()) { //if there is no length for previous
-			cin >> previous;
+			getline (cin,previous);
 			previous += '\0';
 		}
 		output = previous.at(0);
