@@ -24,8 +24,8 @@ There is nothing *requiring* this, but I personally find it:
 
 
 The script you enter is not the script that is interpreted. Future versions will have the compiler and bit interpreter seperate, but right now they are combined.
-That's the long list of bits that comes up when you run a program.
-Each command is compiled into a binary value. If the value isn't a valid command (or a hexadecimal character) it is ignored by the compiler.
+Each command is compiled into a binary value. That's why there's a long list of bits that comes up when you run a program.
+If the value isn't a valid command (or a hexadecimal character) it is ignored by the compiler.
 
 
 Input and Output deals with ASCII characters.
@@ -63,7 +63,8 @@ BIN | HEX | Char | Name | Function
  - The operation's result is then stored on the first operand.
  - The second operand is discarded and set as zero.
  - Last, the pointer readjusts to look at the result, or shifted back by 1.
-TL;DR operations are in [postfix notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation) and replace unused values with zero to keep the disc clean.
+
+ TL;DR operations are in [postfix notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation) and replace unused values with zero to keep the disc clean.
 
 <sup>2</sup>This really means how many *more* bits are being looked at, so if the second operand is `11` then 4 bits will be taken, and if it is `0` then 1 bit will be taken.
 Values above `111111`, which handles 64 bits, will have all but the last 6 bits ignored.
@@ -72,8 +73,9 @@ Values above `111111`, which handles 64 bits, will have all but the last 6 bits 
 
 <sup>4</sup>No really, if you intend to make an alternative compiler I don't care what you do with this thing.
 
-The last bits indicate where the value is being output to, or what input to get a value from. That's the rule. No more, no less.
 In *this* compiler, a non-null value will display that ASCII character and leave the disc value unchanged. A null value, however, takes an input string. It sets the disc value to the first character's ASCII value.
-If input is called later, then it will look at the *next* character in the input string. A null value is added to all input strings. If all values are exhausted, another input string is requested.
+If input is called later, then it will look at the *next* character in the input string. A null value is appended to all input strings. If all values are exhausted, another input string is requested.
 
-Actually, please don't make alternative compilers (yet). The language isn't complete, and even minor changes will break each and every script that came before it.
+Which is kind of cheating, but character input is kind of underwhelming.
+
+End
