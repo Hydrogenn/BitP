@@ -64,7 +64,7 @@ BIN | HEX | Char | Name | Function
  - The second operand is discarded and set as zero.
  - Last, the pointer readjusts to look at the result, or shifted back by 1.
 
- TL;DR operations are in [postfix notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation) and replace unused values with zero to keep the disc clean.
+ TL;DR operations are in [postfix notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation) fill in the extra space with zero.
 
 <sup>2</sup>This really means how many *more* bits are being looked at, so if the second operand is `11` then 4 bits will be taken, and if it is `0` then 1 bit will be taken.
 Values above `111111`, which handles 64 bits, will have all but the last 6 bits ignored.
