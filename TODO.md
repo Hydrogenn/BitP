@@ -5,7 +5,7 @@
   - [ ] Revision v0.5.0
     - [ ] Add a `#` operator which seperates threads
     - [ ] Remove the `+` SET operator
-    - [ ] Change the `<` and `>` shift operators to instead 
+    - [ ] Change the `<` and `>` shift operators to iterate (and be unary) instead of just do a single shift
     - [ ] Replace the `-` SELECT operator with `{` REMEMBER operator
     - [ ] Change the symbol of `_` READ to `-`
     - [ ] Change the symbol of `.` COMMIT to `}`
