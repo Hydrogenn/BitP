@@ -3,14 +3,17 @@
 
 - Continue revising and editing the language
   - [ ] Revision v0.5.0
-    - [ ] Add a `#` operator which seperates threads
-    - [ ] Remove the `+` SET operator
-    - [ ] Change the `<` and `>` shift operators to iterate (and be unary) instead of just do a single shift
-    - [ ] Replace the `-` SELECT operator with `{` REMEMBER operator
-    - [ ] Change the symbol of `_` READ to `-`
-    - [ ] Change the symbol of `.` COMMIT to `}`
-    - [ ] Change the order of the commands
-    - [ ] Flip the order for the READ operator
+    - [ ] Add a `=` operator which seperates threads
+	  - [x] Added operator
+	  - [x] Goes to set location
+	  - [ ] Creates new thread
+    - [x] Remove the `+` SET operator
+    - [x] Change the `<` and `>` shift operators to iterate (and be unary) instead of just do a single shift
+    - [x] Replace the `-` SELECT operator with `{` REMEMBER operator
+    - [x] Change the symbol of `_` READ to `:`
+    - [x] Change the symbol of `.` COMMIT to `}`
+    - [x] Change the order of the commands
+    - [x] Flip the order for the READ operator
     - [ ] Look for other changes that would enhance the language
       - Namely with the `%` EXTERN function
 - [ ] Get the compiler to ignore characters bound by ' apostrophes
@@ -41,7 +44,6 @@
         - [ ] Input allows code injections
         - [ ] Input allows the code to continue
     - [ ] Force a breakpoint every some number of lines
-    - [ ] 
   - [ ] Clean up the printing to display the character at the end of the debug and the total before input
   - [ ] Display the function character instead of the numerical value
     - [ ] Display the numerical value when actually looking at the value of

@@ -3,10 +3,6 @@
 #include <bitset>
 using namespace std;
 
-//'#' DESYNC, ';' LINE-BREAK, and '%' EXTERN are all on the chopping block for changes.
-//'#' is rarely, if ever used.
-//';' can be replicated by simply having clean code.
-//'%' does too many things at once, supposedly being able to handle multiple inputs and outputs. There does not seem to be much viable alternative, however.
 int const l = 4096;
 string setScript();
 void runScript(bitset<l> script);
@@ -46,22 +42,23 @@ string setScript() {
 bitset<l> compileScript(string script) {
 	bitset<l> compiled;
 	cout << hex << uppercase;
+	bool skipping = false;
 	int i2 = 0;
 	for(int i = 0; i < script.length(); ++i) {
 		char c = script.at(i);
 		bool masked = false;
 		bitset<4> mask;
 		switch (c) {
-			case '$':
+			case '#':
 				mask = 0;
 				break;
-			case '+':
+			case ',':
 				mask = 1;
 				break;
-			case '<':
+			case '@':
 				mask = 2;
 				break;
-			case '>':
+			case '=':
 				mask = 3;
 				break;
 			case '[':
@@ -70,62 +67,69 @@ bitset<l> compileScript(string script) {
 			case ']':
 				mask = 5;
 				break;
-			case '@':
+			case '{':
 				mask = 6;
 				break;
-			case '~':
+			case '}':
 				mask = 7;
 				break;
-			case ',':
+			case '~':
 				mask = 8;
 				break;
-			case '.':
+			case '^':
 				mask = 9;
 				break;
-			case '-':
+			case '&':
 				mask = 10;
 				break;
-			case '_':
+			case '/':
 				mask = 11;
 				break;
-			case '/':
+			case '<':
 				mask = 12;
 				break;
-			case '&':
+			case '>':
 				mask = 13;
 				break;
-			case '^':
+			case ':':
 				mask = 14;
 				break;
 			case '%':
 				mask = 15;
 				break;
+			case '\'':
+				skipping = !skipping;
+				break;
 			default:
 				masked = true;
 				break;
 		}
-		//last resort will convert hexadecimal values into their respective character
-		//helps with backwards compatibility, should the commands change internal values
-		if (masked) {
-			int x = (c-'0');
-			if (x>=0 && x<=9) {
-				mask = x;
-				masked = false;
-			}
-			else {
-				int x = (c-'A'+10);
-				if (x>=10 && x<=15) {
+		if (!skipping) {
+			//last resort will convert hexadecimal values into their respective character
+			//helps with backwards compatibility, should the commands change internal values
+			if (masked) {
+				int x = (c-'0');
+				if (x>=0 && x<=9) {
 					mask = x;
 					masked = false;
 				}
+				else {
+					int x = (c-'A'+10);
+					if (x>=10 && x<=15) {
+						mask = x;
+						masked = false;
+					}
+				}
 			}
-		}
-		if (!masked) {
-			for (short o = 0; o < 4; ++ o) {
-		    	compiled[4*(i-i2)+o] = mask[o];
+			if (!masked) {
+				for (short o = 0; o < 4; ++ o) {
+					compiled[4*(i-i2)+o] = mask[o];
+				}
 			}
-		}
-		else {
+			else {
+				++i2;
+			}
+		} else {
 			++i2;
 		}
 	}
@@ -173,17 +177,22 @@ void runScript(bitset<l> script) {
 		}
 		else if (reading || at(script,pointer)==0 || at(script,pointer)==5) {
 			switch (at(script,pointer)) {
-				case 0: //$
+				case 0: //#
 					value = true;
 					break;
-				case 1: //+
-					variable[v]|=1;
+				case 1: //,
+					++v;
+					if (v==8)
+						v=0;
 					break;
-				case 2: //<
-					variable[v]<<=1;
+				case 2: //@
+					pointer = variable[v]*4;
+					pointer -= 4; //this cancels out the addition later, even if there is overflow.
 					break;
-				case 3: //>
-					variable[v]>>=1;
+				case 3: //= which acts identical to '@' GOTO right now
+					//TODO dethread
+					pointer = variable[v]*4;
+					pointer -= 4;
 					break;
 				case 4: //[
 					if (variable[v] == 0) {
@@ -193,45 +202,42 @@ void runScript(bitset<l> script) {
 				case 5: //]
 					reading = true;
 					break;
-				case 6: //@
-					pointer = variable[v]*4;
-					pointer -= 4; //this cancels out the addition later, even if there is overflow.
+				case 6: //{
+					target[0]=variable[v];
+					target[1]=variable[r(v)];
 					break;
-				case 7: //~
-					variable[v] = ~variable[v];
-					break;
-				case 8: //,
-					++v;
-					if (v==8)
-						v=0;
-					break;
-				case 9: //.
+				case 7: //}
 					script = setRange(script,variable[v],target[0],target[1]);
 					break;
-				case 10: //-
-					target[0]=variable[r(v)];
-					target[1]=variable[v];
-					variable[r(v)] = range(script,variable[r(v)],variable[v]);
+				case 8: //~
+					variable[v] = ~variable[v];
+					break;
+				case 9: //^
+					variable[r(v)]^=variable[v];
 					variable[v] = 0;
 					v = r(v);
 					break;
-				case 11: //_
-					variable[r(v)] = range(script,variable[r(v)],variable[v]);
-					variable[v] = 0;
-					v = r(v);
-					break;
-				case 12: ///
-					variable[r(v)]|=variable[v];
-					variable[v] = 0;
-					v = r(v);
-					break;
-				case 13: //&
+				case 10: //&
 					variable[r(v)]&=variable[v];
 					variable[v] = 0;
 					v = r(v);
 					break;
-				case 14: //^
-					variable[r(v)]^=variable[v];
+				case 11: ///
+					variable[r(v)]|=variable[v];
+					variable[v] = 0;
+					v = r(v);
+					break;
+				case 12: //<
+					variable[r(v)]<<=variable[v];
+					variable[v] = 0;
+					v = r(v);
+					break;
+				case 13: //>
+					variable[r(v)]>>=variable[v];
+					variable[v] = 0;
+					v = r(v);
+				case 14: //:
+					variable[r(v)] = range(script,variable[v],variable[r(v)]);
 					variable[v] = 0;
 					v = r(v);
 					break;
