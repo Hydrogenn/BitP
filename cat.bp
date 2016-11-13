@@ -1,2 +1,5 @@
-%[%& +],+ ^[&$ A%&]
-@
+-| gets a character without waiting for enter and without echo
+-^ displays the last character sent
+-. flushes the packet
+;  as no values have been changed this goto will always lead to zero
+in the interests of keeping things simple the loop will never end

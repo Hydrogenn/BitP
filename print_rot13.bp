@@ -1,4 +1,4 @@
-<>F0 ;000 0000 0000 this is almost identical to 'print_rot13.bp'
+<>F0 ;000 0000 0000
 >7,. -A-5 -&<> F0;, print normally (most characters)
 >A-A -5-& <>F0 ;,,, new line (enter)
 >8-A <>20 -A>8 -A-5 'back, space, back' (backspace)

@@ -1,0 +1,14 @@
+<>50 ;000 0000 0000
+>7,. -[-^ -&<> 50;, print normally (most characters)
+>A-[ -^<> 50;, ,,,, new line (enter)
+>7-[ -^<> 50;, ,,,, error beep
+>7,[ -&<3 <>]- -,,, terminate (escape) also safely replaces the first character with the correct code
+
+>7,[-&-|-]],		control room
+>D^~,				'^~' works like ==
+	<>20:
+>7,.,<>E0^~,
+	<>30:			do an error beep for special control characters
+>7,.,>8^~,
+	<>30:			do an error beep for backspace as well
+<>10;				default casez

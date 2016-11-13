@@ -1,0 +1,27 @@
+a typical hello world script
+
+'< = next character determines the length of commands to be read as values'
+'> = happens to be stored as 0x1'
+'<> = the next two characters are hexadecimal values, not commands, because of the above'
+'48 = the ascii character code for H in hex'
+'-[ or -A = Store in the packet and clear from the disc/stack'
+'-^ or -5 = Output the packet in its current state; note it does not edit the packet'
+
+<>48-[	H
+<>65-[	e
+<>6C-[	l
+<>6C-[	l
+<>6F-[	o
+<>20-[	(space)
+<>57-[	W
+<>6F-[	o
+<>72-[	r
+<>6C-[	l
+<>64-[	d
+<>21-[	!
+'>A -['	(omitted because 'Done' contains a new line before it)
+-^		send packet
+
+'Done' is automatically printed when a program completes
+This also keeps the console window open
+It is not part of the program
