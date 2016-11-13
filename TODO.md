@@ -2,21 +2,10 @@
 (to-do list)
 
 - Continue revising and editing the language
-  - [ ] Revision v0.5.0
-    - [ ] Add a `=` operator which seperates threads
-	  - [x] Added operator
-	  - [x] Goes to set location
-	  - [ ] Creates new thread
-    - [x] Remove the `+` SET operator
-    - [x] Change the `<` and `>` shift operators to iterate (and be unary) instead of just do a single shift
-    - [x] Replace the `-` SELECT operator with `{` REMEMBER operator
-    - [x] Change the symbol of `_` READ to `:`
-    - [x] Change the symbol of `.` COMMIT to `}`
-    - [x] Change the order of the commands
-    - [x] Flip the order for the READ operator
+  - [ ] Revision v0.6.+
+    - [ ] Add actual desynchronization
+	- [ ] Place most significant bits last, not first
     - [ ] Look for other changes that would enhance the language
-      - Namely with the `%` EXTERN function
-- [ ] Get the compiler to ignore characters bound by ' apostrophes
 - [ ] Create new (and seperate) compilers and editors
   - [ ] COMPILER
     - [ ] Compile the given script
@@ -30,9 +19,6 @@
     - [ ] Seperate debug flag to print debug info
     - [ ] Seperate read flag to prevent writing over the script file
 - [ ] Improve debugging
-  - [ ] Reduce clutter
-    - [ ] Stop displaying '..' when NOT skipped
-    - [ ] Stop displaying '.' when NOT a value
   - [ ] Edit stack display
     - [ ] Show the selected value in the stack as the last one
     - [ ] Show the rest as beneath it
@@ -44,7 +30,11 @@
         - [ ] Input allows code injections
         - [ ] Input allows the code to continue
     - [ ] Force a breakpoint every some number of lines
-  - [ ] Clean up the printing to display the character at the end of the debug and the total before input
-  - [ ] Display the function character instead of the numerical value
-    - [ ] Display the numerical value when actually looking at the value of
-    - [ ] Do not display the '$' character when looking at a value to reduce clutter
+  - [ ] Make printing great again
+    - [ ] Show characters right after the debug string instead of right before the last
+	- [ ] Show the accumulated characters right before the next input call
+	- [ ] Become president elect
+  - [ ] Display the function character in addition to the numerical value
+  - [ ] Show a `-` before the function when looking at an extended function
+  - [x] Do not show the function character when looking at a numerical value
+    - [ ] Show the remaining digits in place of it
