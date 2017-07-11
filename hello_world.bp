@@ -23,5 +23,5 @@ a typical hello world script
 -^		send packet
 
 'Done' is automatically printed when a program completes
-This also keeps the console window open
-It is not part of the program
+this also keeps the console window open
+it is not part of the program

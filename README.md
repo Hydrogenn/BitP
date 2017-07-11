@@ -4,8 +4,8 @@
 
 Version 0.6.0 is coming out soon. It has 31 commands. *Everything will break*. Don't bother with this project yet, move along...
 
-This is an interpreter for a new language, BitP (/bɪd-ɪp/ I think), written in C++.
-It is designed to resemble (and be practical as) an assembly language, but compacted into 16 commands so that a human can learn it more easily.
+This is an interpreter for a new language, BitP (/bɪd-ɪp/), written in C++.
+It was designed to resemble (and be practical as) an assembly language, but compacted into 16 commands so that a human can learn it more easily.
 It ended up being more of an esolang...
 
  - The program reads `script.bp`.

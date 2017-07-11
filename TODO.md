@@ -6,6 +6,7 @@
     - [ ] Add actual desynchronization
 	- [ ] Place most significant bits last, not first
     - [ ] Look for other changes that would enhance the language
+- [ ] Allow increase memory reserve
 - [ ] Create new (and seperate) compilers and editors
   - [ ] COMPILER
     - [ ] Compile the given script
@@ -33,8 +34,15 @@
   - [ ] Make printing great again
     - [ ] Show characters right after the debug string instead of right before the last
 	- [ ] Show the accumulated characters right before the next input call
-	- [ ] Become president elect
+	- [x] Become president
   - [ ] Display the function character in addition to the numerical value
   - [ ] Show a `-` before the function when looking at an extended function
   - [x] Do not show the function character when looking at a numerical value
     - [ ] Show the remaining digits in place of it
+- [ ] Create a Redcode implementation (Pifir Principle)
+  - [ ] Load scripts 'red.bpr' and 'blue.bpr' instead of 'script.bp'
+    - [ ] Places 'blue.bpr' at the end and backwards
+    - [ ] 'blue.bpr' reads backwards
+	- [ ] 'blue.bpr' goes to indexes backwards
+  - [ ] Make 'TIME' output the number of cycles done since the beginning of the fight
+  - [ ] Add option to disable any given function
