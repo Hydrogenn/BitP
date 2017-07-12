@@ -1,30 +1,131 @@
-<>A0 ;000 0000 0000
->7,. -A-5 -&<> A0;, print normally (most characters)
->A-A -5-& <>A0 ;,,, new line (enter)
->8-A <>20 -A>8 -A-5 'back, space, back' (backspace)
--&<> A0;, ,,,, ,,,,
->7,. ,>D, +-A- 5-&< add '13' (a to m)
->A0; ,,,, ,,,, ,,,,
->7,. ,>D, ~+-A -5-& subtract '13' (a to m)
-<>A0 ;,,, ,,,, ,,,,
->7,[ -&<> <>]- -,,, terminate (escape) also safely replaces the first character with the correct code
->7,[-&-7-B],		control room
->D^~,				'^~' is the same as == (not an actual command)
-	>2>0:
->7,.,>8^~,
-	<>30:
->7,.,<>1B^~,
-	<>90:
->7,.,<>7A->,
-	<>10:
->7,.,<>41-<,
-	<>10:
->7,.,<>5A->,
->7,.,<>61-<&,		only passes when both tests are true
-	<>10:
->3,>4.,>5^~,
->3,>4.,>7^~|,
-	<>70:
->3,.,>E-<,
-	<>50:
-<>70;				default case
+this is a demonstration script
+it performs a rot thirteen shift on any characters
+the compiler will pick up on any of the sixteen special characters so there are no special characters in these comments
+values a to f are are also picked up if uppercase
+even if these characters do nothing such as a comma at the beginning of a script it will make gotos and variable storage unneccessarily long
+() and ' and " and ! and ; and : and * and # and ` all work fine to name a few
+try to keep the ' character matching to other versions of itself
+
+all instructions have been commented
+these comments make compilation slower which right now is done at the same time as interpretation
+if speed is of concern do not throw away the comments because they are too important and will be optimised
+
+i call this format the 'ticker tape' format
+everything is layed out to be in chunks of four characters (sixteen bits)
+new lines are between every sixteen characters to make index counting at least manageable
+whitespace is between each line to make commenting much easier
+
+additionally the program is layed out in function format
+the first few lines are variables because they are accessed very frequently
+everything after that is a function
+the very first line of variables at first holds the correct values to jump to the control room which is much further ahead
+these values are overwritten as necessary
+the control room simply calls functions which in and of itself is convoluted
+
+||variables||
+$1$1 $7@0 0000 0000 initial value will jump to the actual code but is overwritten later
+||add function||
+,$F- ,$2$ 0,$F _^.& when an index value matches the intended lookup value because of offset i call it a 'pun'
+but that is just me
+$2$0 ,$F- ,$1$ 0,$F
+
+_~&< .[&$ 1$0@ ]$F_ final value is stored in the first short address (if you are wondering the and operators are just filler)
+          ||subtract function||
+@&&& &&&& $1$0 ,$F-
+
+,$2$ 0,$F _^.& $2$0
+
+,$F- ,$1$ 0,$F _&<.
+
+[&$ 4$7@ ]&$F _@&&& final value is stored once again in the first short address (the and operator in this case is useful as it clears the jump address)
+||overflow function (comparison)|| works by testing if the value subtracting a to b yields an overflow; only works with the short addresses used
+$1$0 ,$F- &$3$ 0,$F
+equal to will return true and end the function
+_.,$ 2$0, $F_^ [&+]
+
+,+^[ .&,$ F_@] &$1$ actual jump loop location is here; the and operation is necessary to handle jumping
+
+0,$F -,$2 $0,$ F_^.
+
+,$2$ 0,$F -&<. ,$8$
+this section of code will run if the value has overflow or where the first value is proven less than
+0<&[ &$1$ 0,$F -&+. it returns one at address one zero which means that the end result is negative
+otherwise check to ensure there is still a carry
+&$F_ @]$2 $0,$ F_[& if there is a carry then do it all over again
+this section of code will run if there is no longer a carry but there was not overflow either
+$A$B @]$1 $0,$ F-&. it returns zero at address one zero which means that the end result is positive
+          ||display function||
+&$F_ @&&& $1$0 ,$F_
+          ||control room||
+%&&& &&&& %[,+ ],+^
+
+[&$A %&$1 $1$7 @]$3 bit of a mess here but the value is already there and i did not want to get rid of it
+             v code starts there
+$0,$ F-,& /.&$ 2$0, it all gets cleaned up in any case
+
+$F-& $4$0 .&$F -&$1
+
+$5$B .&$7 $F@& $1$0
+
+,_[& $1$0 ,$F- &$3$
+
+0,$F _.&$ 1$0$ 7@]& skips the rest and prints normally if below the letters range
+
+$2$0 ,$F- &$7$ A.&$
+
+F-&$ 1$A$ 0.&$ 7$F@
+
+&$1$ 0,_, +^[& $1$0
+
+,$F- &$3$ 0,$F _.&$
+
+1$0$7 @]& &&&& &&&& skips the rest and prints normally if above the letters range
+
+$2$0 ,$F- &$5$ A.&$
+
+F-&$ 1$F$ 0.&$ 7$F@
+
+&$1$ 0,_, +^[& &&&&
+
+$2$0 ,$F- &$6$ 0.&$
+
+F-&$ 2$2$ 0.&$ 7$F@
+
+&$1$ 0,_[ &$1$ 0,$F
+
+-&$3 $0,$ F_.& $1$0
+
+$7@] &&&& &&&& &&&& skips the rest and prints normally if this is one of the six characters in between the letters range
+
+$3$4 ,$3_ ,$4^ [&+]
+
+,+^[ &$2$ 8$0@ ]$3$
+
+4,$3 _,$6 ^[&+ ],+^
+
+[&$1 $0,$ F-&$ 3$0,
+
+$3_. &$2$ 0,$F -&$E
+
+.&$F -&$2 $B$3 .&$A wow look at all this documentation
+
+$B@& $1$0 ,_[& $F-&
+
+$1$0 $7.& $1$0 ,$F-
+
+&$3$ 0,$F _.&$ 2$0,
+
+$F-& $D.& $1$0 @]&&
+
+$F-& $1$0 $7.& $1$0
+
+,$F- &$3$ 0,$F _.&$
+
+2$0, $F-& $D.& $4$7
+
+@--- ---- ---- ----
+Because this is the end of the program, you can use special characters to your heart's content.
+LOLOLOL ABADEF W(DWHD*W(_DA(_*D_A(*DW_(*YDA_)
+Yeah, it's sloppy leaves behind garbage, but who cares? There's nothing else to do!
+And if the apostrophes don't match at the end, blame the compiler.
+Lower Null Punct is so hard to talk in. I much prefer normal English.
