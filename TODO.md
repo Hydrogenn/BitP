@@ -2,18 +2,7 @@
 (to-do list)
 
 - Continue revising and editing the language
-  - [ ] Revision v0.5.0
-    - [ ] Add a `#` operator which seperates threads
-    - [ ] Remove the `+` SET operator
-    - [ ] Change the `<` and `>` shift operators to iterate (and be unary) instead of just do a single shift
-    - [ ] Replace the `-` SELECT operator with `{` REMEMBER operator
-    - [ ] Change the symbol of `_` READ to `-`
-    - [ ] Change the symbol of `.` COMMIT to `}`
-    - [ ] Change the order of the commands
-    - [ ] Flip the order for the READ operator
-    - [ ] Look for other changes that would enhance the language
-      - Namely with the `%` EXTERN function
-- [ ] Get the compiler to ignore characters bound by ' apostrophes
+- [ ] Allow increase memory reserve
 - [ ] Create new (and seperate) compilers and editors
   - [ ] COMPILER
     - [ ] Compile the given script
@@ -27,22 +16,28 @@
     - [ ] Seperate debug flag to print debug info
     - [ ] Seperate read flag to prevent writing over the script file
 - [ ] Improve debugging
-  - [ ] Reduce clutter
-    - [ ] Stop displaying '..' when NOT skipped
-    - [ ] Stop displaying '.' when NOT a value
   - [ ] Edit stack display
     - [ ] Show the selected value in the stack as the last one
     - [ ] Show the rest as beneath it
-    - [ ] Show a '!' when nearing the disc limit
   - [ ] Breakpoint lookup
-    - [ ] Take '*' to mean a break point in the script
+    - [ ] Take '!' to mean a break point in the script
       - [x] Does not add to the length of the bit script
       - [ ] Briefly stops the program for input
         - [ ] Input allows code injections
         - [ ] Input allows the code to continue
     - [ ] Force a breakpoint every some number of lines
-    - [ ] 
-  - [ ] Clean up the printing to display the character at the end of the debug and the total before input
-  - [ ] Display the function character instead of the numerical value
-    - [ ] Display the numerical value when actually looking at the value of
-    - [ ] Do not display the '$' character when looking at a value to reduce clutter
+  - [ ] Make printing great again
+    - [ ] Show characters right after the debug string instead of right before the last
+	- [ ] Show the accumulated characters right before the next input call
+	- [x] Become president
+  - [ ] Display the function name in addition to the numerical value
+  - [x] Do not show the function name when looking at a numerical value
+    - [ ] Remove the `#` character displayed before those
+- [ ] Create a Redcode implementation (Pifir Principle)
+  - [ ] Load scripts 'red.bpr' and 'blue.bpr' instead of 'script.bp'
+    - [ ] Places 'blue.bpr' at the end and backwards
+    - [ ] 'blue.bpr' reads backwards
+	- [ ] 'blue.bpr' goes to indexes backwards
+  - [ ] Make 'TIME' output the number of cycles done since the beginning of the fight
+  - [ ] Add option to disable any given function
+

@@ -1,0 +1,7 @@
+*
+
+'
+The asterisk is treated as a TODO character.
+Attempting to compile a program containing an asterisk will fail.
+This does not apply to asterisks in comments, like this one.
+'
