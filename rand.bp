@@ -1,0 +1,18 @@
+'0000' #1,# 4#0@ 4_4_ 4_4_
+'0010' 4_4_ 4_4_ 4_4_ 4_4_
+'0020' 4_4_ 4_4_ 4_4_ 4_4_
+'0030' 4_4_ 4_4_ 4_4_ 4_4_
+#2#0,#F:],&#2#8,#7:],&#3#0,#7:],&#3#8,#7:],&
+#4#0,#7:],&#4#8,#7:],&#5#0,#7:],&#5#8,#7:],&
+#6#0,#7:],&#6#8,#7:],&#7#0,#7:],&#7#8,#7:],&
+#8#0,#7:],&#8#8,#7:],&#9#0,#7:],&#9#8,#7:],&
+#A#0,#7:],&#A#8,#7:],&#B#0,#7:],&#B#8,#7:],&
+#C#0,#7:],&#C#8,#7:],&#D#0,#7:],&#D#8,#7:],&
+#E#0,#7:],&#E#8,#7:],&#F#0,#7:],&#F#8,#7:],&
+
+'
+Will print a series of random characters with the following values as valid:
+@ABCDEFGHIJKLMNO
+Strangely, the default implementation always returns the same values.
+None of them are F or G, but with only 28 characters that doesn`t seem unlikely.
+'
