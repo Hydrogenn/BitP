@@ -13,7 +13,7 @@
 '
 Will print a series of random characters with the following values as valid:
 @ABCDEFGHIJKLMNO
-Strangely, the default implementation always returns the same value:
+The default implementation always returns the same value:
 KKEN@IMHOOBJEHKLDAIEEIC@BNO@
 None of them are F or G, but with only 28 characters that doesn`t seem unlikely.
 '

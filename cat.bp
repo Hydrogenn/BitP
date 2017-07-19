@@ -1,6 +1,6 @@
-'0000' #1,# 1#0@ ____ ____ goes to '0020'; '0008-000B' serves as storage for input characters and is indexed as '#2#0'
-'0010' #2#0 ,#F{ &,&[ },#3
-'0020' #0@# 1,#5 #0@_ ____
-'0030' #2#0 ,#F: ],&# 1,#1
-'0040' #B@_ ____ ____ ____
-'0050' #A], &#3# F#F@
+'@0000' #1,# 1#0@ ____ ____	goes to the next line; '@8-B' serves as storage for input characters and is indexed as ':20-2F'
+'@0010' #2#0 ,#F{ &,&[ },#3	saves the index ':20-2F' which is right after the startup code so that all write commands automatically go there; clears that and asks for input
+'@0020' #0@# 1,#5 #0@_ ____	goto '@30' if the character is not '/0' NUL and goto '@50' otherwise
+'@0030' #2#0 ,#F: ],&# 1,#1	if the hex character is not NUL then print the character saved at ':20-2F'
+'@0040' #B@_ ____ ____ ____	and go back to '@1B' (which skips right to the read value)
+'@0050' #A]					if the hex character IS NUL then print a new line and end the program

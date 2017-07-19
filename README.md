@@ -1,5 +1,8 @@
 # BitP v0.7.0
 
+You're here for the challenge, aren't you?
+If you need help on how this works, read the wiki. If that's all gibberish, there are a few examples provided.
+
 This is an interpreter for a programming language, BitP (/bɪd-ɪp/), written in C++.
 It was designed to resemble (and be practical as) an assembly language, but compacted into 16 commands so that a human can learn it more easily.
 It ended up being more of an esolang...

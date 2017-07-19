@@ -1,0 +1,29 @@
+a typical hello world script
+
+#4#8]& H
+#6#5]& e
+#6#C]]& ll (the value is remembered across outputting)
+#6#F]& o
+#2#0]& (space)
+#5#7]& W
+#6#F]& o
+#7#2]& r
+#6#C]& l
+#6#4]& d
+#2#1]& !
+#A]& (new line)
+
+'
+Explaination:
+# gets the hex value right in front of it, and this can be stacked to put in the hex value for any ascii character.
+] prints the character. this program will work in ascii, unicode and utf encodings, and probably many others.
+& performs an AND bitwise operation with a 0, effectively clearing the value.
+Rinse and repeat for all values.
+
+Some notes about comments:
+Anything in between '' comments is completely ignored.
+Also, characters other than the 16 functions ( #,{}~^&/<>@=:%[] ) or valid hexadecimal digits ( 0123456789ABCDEF ) are treated as comments.
+Lowercase abcdef are also ignored outside of comments.
+
+
+'

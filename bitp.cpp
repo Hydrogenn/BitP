@@ -5,9 +5,9 @@
 #include <random> //generating arbitrary commands.
 using namespace std;
 
-int const l = 8192; //maximum program size. change if you need to run programs bigger than 1 kb (after compilation).
+int const l = 16384; //maximum program size. change if you need to run programs bigger than 2 kb (after compilation).
 string setScript();
-void runScript(bitset<l> script, unsigned long long pointer);
+void runScript(bitset<l> script, unsigned long long pointer, unsigned long long length);
 short at(bitset<l> data, int i);
 unsigned long range(bitset<l> data, int i, short length);
 bitset<l> setRange(bitset<l> data, unsigned long value, int i, short length);
@@ -17,8 +17,9 @@ char packet_input(string &previous);
 void packet_output(long long unsigned output);
 
 int main() {
-	bitset<l> compileScript(string script);
+	bitset<l> compileScript(string script,unsigned long long &length);
 	bitset<l> script;
+	unsigned long long length = 0;
 	cout << "Enter the name of the script you would like to run." << endl;
 	string filename;
 	cin >> filename;
@@ -34,8 +35,8 @@ int main() {
 		}
 		scriptFile.close();
 		try {
-			script = compileScript(scriptString);
-			runScript(script,0);
+			script = compileScript(scriptString,length);
+			runScript(script,0,length);
 			cout << "Done, hit enter to continue";
 		} catch (int e) {
 			cerr << "Tried to compile an incomplete program!" << endl;
@@ -56,7 +57,7 @@ string setScript() {
     return script;
 }
 
-bitset<l> compileScript(string script) {
+bitset<l> compileScript(string script,unsigned long long &length) {
 	bitset<l> compiled;
 	cout << hex << uppercase;
 	bool skipping = false;
@@ -161,11 +162,12 @@ bitset<l> compileScript(string script) {
 		} else {
 			++i2;
 		}
+		length = 4*(i - i2);
 	}
 	return compiled;
 }
 
-void runScript(bitset<l> script, unsigned long long pointer) {
+void runScript(bitset<l> script, unsigned long long pointer, unsigned long long length) {
 	unsigned long long variable[8] = {0}; //values
 	unsigned char v = 0; //points to the value being currently used
 	bool value = false; //tells whether the pointer is looking at a command or a value, for the '#' VALUE command
@@ -179,7 +181,7 @@ void runScript(bitset<l> script, unsigned long long pointer) {
 	1 - cin
 	*/
 	
-	while(pointer < l) { // ---------------- BEGIN LOOP
+	while(pointer < length) { // ---------------- BEGIN LOOP
 	
 		/*debug this code is commented out in the default compilation.
 		for (short i=0;i<=7;i++) {
@@ -266,7 +268,7 @@ void runScript(bitset<l> script, unsigned long long pointer) {
 						  note that if you want to use the above you must also run this at the top:
 						#import <thread>
 						  and you should comment out or delete this code below.*/
-						runScript(script, variable[v]*4 - 4);
+						runScript(script, variable[v]*4 - 4,length);
 					}
 					variable[v] = 0;
 					v = r(v);
