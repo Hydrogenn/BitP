@@ -6,7 +6,14 @@ This program will continually ask for input until it sees the character "P".
 '01' ,#5#0^				perform exclusive or with '50' which is the code point for 'P'
 '07' ,#1#5@				goto '15' if that value is not zero (the only way it can be exactly zero is if the input itself is '50')
 '0C' #1,#1#9@			else goto '19'
-'15' #1,@				goto '0'
+'15' #1,@				goto '00'
 '19' --program end--	any goto after program termination will end program
 
 'Compile Size: 9.5 bytes'
+
+'
+NOTE: Everything in these apostrophes are COMPLETELY IGNORED by the compiler.
+You do NOT need to put them before lines to indicate where you`re jumping. That was done for readability.
+The jump indexes are determined by the NUMBER OF CHARACTERS, zero-indexed.
+So going to `00` means that you are going to the zeroth character.
+'
