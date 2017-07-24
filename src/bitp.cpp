@@ -6,8 +6,7 @@
 using namespace std;
 
 int const l = 16384; //maximum program size. change if you need to run programs bigger than 2 kb (after compilation).
-string setScript();
-void runScript(bitset<l> script, unsigned long long pointer, unsigned long long length);
+void runScript(bitset<l> &script, unsigned long long &pointer, unsigned long long &length);
 short at(bitset<l> data, int i);
 unsigned long range(bitset<l> data, int i, short length);
 bitset<l> setRange(bitset<l> data, unsigned long value, int i, short length);
@@ -50,13 +49,6 @@ int main() {
 	cin.ignore();
 }
 
-string setScript() {
-	cout << "type/paste script\n";
-	string script;
-	cin >> script;
-    return script;
-}
-
 bitset<l> compileScript(string script,unsigned long long &length) {
 	bitset<l> compiled;
 	cout << hex << uppercase;
@@ -71,52 +63,52 @@ bitset<l> compileScript(string script,unsigned long long &length) {
 		bitset<4> mask;
 		switch (c) { //This is a good example of how not to code.
 			case '#':
-				mask = 0;
+				mask = 0x0;
 				break;
 			case ',':
-				mask = 1;
+				mask = 0x1;
 				break;
 			case '{':
-				mask = 2;
+				mask = 0x2;
 				break;
 			case '}':
-				mask = 3;
+				mask = 0x3;
 				break;
 			case '~':
-				mask = 4;
+				mask = 0x4;
 				break;
 			case '^':
-				mask = 5;
+				mask = 0x5;
 				break;
 			case '&':
-				mask = 6;
+				mask = 0x6;
 				break;
 			case '/':
-				mask = 7;
+				mask = 0x7;
 				break;
 			case '<':
-				mask = 8;
+				mask = 0x8;
 				break;
 			case '>':
-				mask = 9;
+				mask = 0x9;
 				break;
 			case '@':
-				mask = 10;
+				mask = 0xA;
 				break;
 			case '=':
-				mask = 11;
+				mask = 0xB;
 				break;
 			case ':':
-				mask = 12;
+				mask = 0xC;
 				break;
 			case '%':
-				mask = 13;
+				mask = 0xD;
 				break;
 			case '[':
-				mask = 14;
+				mask = 0xE;
 				break;
 			case ']':
-				mask = 15;
+				mask = 0xF;
 				break;
 			case '_':
 				mask = dist16(rng);
@@ -167,7 +159,7 @@ bitset<l> compileScript(string script,unsigned long long &length) {
 	return compiled;
 }
 
-void runScript(bitset<l> script, unsigned long long pointer, unsigned long long length) {
+void runScript(bitset<l> &script, unsigned long long &pointer, unsigned long long &length) {
 	unsigned long long variable[8] = {0}; //values
 	unsigned char v = 0; //points to the value being currently used
 	bool value = false; //tells whether the pointer is looking at a command or a value, for the '#' VALUE command
@@ -209,49 +201,52 @@ void runScript(bitset<l> script, unsigned long long pointer, unsigned long long 
 		}
 		else {
 			switch (at(script,pointer)) {
-				case 0: //# VALUE
+				case 0x0: //# VALUE
 					value = true;
 					break;
-				case 1: //, NEXT
+				case 0x1: //, NEXT
 					++v;
 					if (v==8)
 						v=0;
 					break;
-				case 2: //{ REMEMBER
+				case 0x2: //{ REMEMBER
 					ilocation=variable[r(v)];
 					ilength=variable[v];
 					break;
-				case 3: //} COMMIT
+				case 0x3: //} COMMIT
 					script = setRange(script,variable[v],ilocation,ilength);
+					if (ilocation + ilength >= length) {
+						length = ilocation + ilength
+					}
 					break;
-				case 4: //~ NOT
+				case 0x4: //~ NOT
 					variable[v] = ~variable[v];
 					break;
-				case 5: //^ XOR
+				case 0x5: //^ XOR
 					variable[r(v)]^=variable[v];
 					variable[v] = 0;
 					v = r(v);
 					break;
-				case 6: //& AND
+				case 0x6: //& AND
 					variable[r(v)]&=variable[v];
 					variable[v] = 0;
 					v = r(v);
 					break;
-				case 7: /// OR
+				case 0x7: /// OR
 					variable[r(v)]|=variable[v];
 					variable[v] = 0;
 					v = r(v);
 					break;
-				case 8: //< LSHIFT
+				case 0x8: //< LSHIFT
 					variable[r(v)]<<=variable[v];
 					variable[v] = 0;
 					v = r(v);
 					break;
-				case 9: //> RSHIFT
+				case 0x9: //> RSHIFT
 					variable[r(v)]>>=variable[v];
 					variable[v] = 0;
 					v = r(v);
-				case 10: //@ IF-GOTO
+				case 0xA: //@ IF-GOTO
 					if (variable[r(v)] != 0) {
 						pointer = variable[v]*4 - 4;
 					}
@@ -259,7 +254,7 @@ void runScript(bitset<l> script, unsigned long long pointer, unsigned long long 
 					variable[v] = 0;
 					v = r(v);
 					break;
-				case 11: //= IF-THREAD (alias)
+				case 0xB: //= IF-THREAD (alias)
 					if (variable[r(v)] != 0) {
 						/*The compiler I use is stubborn and refuses to compile the following:
 						thread other(runScript, script, variable[v]*4 - 4);
@@ -273,18 +268,18 @@ void runScript(bitset<l> script, unsigned long long pointer, unsigned long long 
 					variable[v] = 0;
 					v = r(v);
 					break;
-				case 12: //: READ
+				case 0xC: //: READ
 					variable[r(v)] = range(script,variable[r(v)],variable[v]);
 					variable[v] = 0;
 					v = r(v);
 					break;
-				case 13: //% PORT
+				case 0xD: //% PORT
 					port = variable[v];
 					break;
-				case 14: //[ INPUT
+				case 0xE: //[ INPUT
 					variable[v] = packet_input(previous);
 					break;
-				case 15: //] OUTPUT
+				case 0xF: //] OUTPUT
 					packet_output(variable[v]);
 					break;
 				default:

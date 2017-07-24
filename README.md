@@ -13,6 +13,11 @@ It ended up being more of an esolang...
  - The program (bitp-mac) reads any file you give it. You must include the file extension.
  - There is no debug build for MacOS.
  - Credit to Rayzr522 for porting.
+ 
+#### Linux
+ - The program (bitp-linux) reads any file you give it. You must include the file extension.
+ - There is no debug build for Linux.
+ - Credit to Rayzr522 for porting.
 
 bitp.cpp contains the source code. If you are having problems with the above, you can attempt to compile this yourself. This will require C++11.
 
