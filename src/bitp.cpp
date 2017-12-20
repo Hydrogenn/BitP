@@ -15,14 +15,18 @@ unsigned short r(unsigned short value);
 char packet_input(string &previous);
 void packet_output(long long unsigned output);
 
-int main() {
+int main(int argc, char* argv[]) {
+	if (argc <= 1) {
+		cout << "Usage: bitp <file>" << endl;
+		return 1;
+	}
+
 	bitset<l> compileScript(string script,unsigned long long &length);
 	bitset<l> script;
 	unsigned long long length = 0;
-	cout << "Enter the name of the script you would like to run." << endl;
-	string filename;
-	cin >> filename;
-	cin.ignore();
+	// cout << "Enter the name of the script you would like to run." << endl;
+	string filename = string(argv[1]);
+	
 	ifstream scriptFile (filename.c_str());
 	string scriptString;
 	string line;
@@ -35,18 +39,19 @@ int main() {
 		scriptFile.close();
 		try {
 			script = compileScript(scriptString,length);
-			runScript(script,0,length);
-			cout << "Done, hit enter to continue";
+			// Yay?
+			unsigned long long zeeeeeero = 0;
+			runScript(script, zeeeeeero,length);
 		} catch (int e) {
 			cerr << "Tried to compile an incomplete program!" << endl;
 			cout << "Failed to load. Hit enter to continue." << endl;
+			cin.ignore();
 		}
 	}
 	else {
 		cout << "The file could not be opened. Hit enter to continue" << endl;
 		cin.ignore();
 	};
-	cin.ignore();
 }
 
 bitset<l> compileScript(string script,unsigned long long &length) {
@@ -216,7 +221,7 @@ void runScript(bitset<l> &script, unsigned long long &pointer, unsigned long lon
 				case 0x3: //} COMMIT
 					script = setRange(script,variable[v],ilocation,ilength);
 					if (ilocation + ilength >= length) {
-						length = ilocation + ilength
+						length = ilocation + ilength;
 					}
 					break;
 				case 0x4: //~ NOT
@@ -263,7 +268,9 @@ void runScript(bitset<l> &script, unsigned long long &pointer, unsigned long lon
 						  note that if you want to use the above you must also run this at the top:
 						#import <thread>
 						  and you should comment out or delete this code below.*/
-						runScript(script, variable[v]*4 - 4,length);
+						unsigned long long newPosition = variable[v] * 4 - 4;
+						runScript(script, newPosition, length);
+						variable[v] = (newPosition + 4) / 4;
 					}
 					variable[v] = 0;
 					v = r(v);
