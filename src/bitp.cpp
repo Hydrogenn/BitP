@@ -16,25 +16,19 @@ unsigned short r(unsigned short value);
 char packet_input(string &previous);
 void packet_output(long long unsigned output);
 
+bool DEBUG = false;
+
 int main(int argc, char* argv[]) {
 	if (argc <= 1) {
-		cout << "Usage: bitp <file>" << endl;
+		cout << "Usage: bitp <file> [debug]" << endl;
 		return 1;
 	}
 
 	bitset<l> compileScript(string script,unsigned long long &length);
 	bitset<l> script;
 	unsigned long long length = 0;
-<<<<<<< HEAD
-	cout << "Enter the name of the script you would like to run." << endl;
-	string filename;
-	cin >> filename;
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');
-=======
 	// cout << "Enter the name of the script you would like to run." << endl;
 	string filename = string(argv[1]);
-	
->>>>>>> origin/master
 	ifstream scriptFile (filename.c_str());
 	string scriptString;
 	string line;
@@ -46,25 +40,19 @@ int main(int argc, char* argv[]) {
 		}
 		scriptFile.close();
 		try {
+			if (argc >= 3 && string(argv[2]) == "-d") {
+				DEBUG = true;
+			}
 			script = compileScript(scriptString,length);
-<<<<<<< HEAD
 			runScript(script,0,length);
-			cout << "Done, hit enter to continue";
 		} catch (const std::invalid_argument& e) {
-=======
-			// Yay?
-			unsigned long long zeeeeeero = 0;
-			runScript(script, zeeeeeero,length);
-		} catch (int e) {
->>>>>>> origin/master
 			cerr << "Tried to compile an incomplete program!" << endl;
 			cerr << e.what() << endl;
-			cout << "Failed to load. Hit enter to continue." << endl;
-			cin.ignore();
+			cout << "Failed to load." << endl;
 		}
 	}
 	else {
-		cout << "The file could not be opened. Hit enter to continue" << endl;
+		cout << "The file could not be opened." << endl;
 	};
 }
 
@@ -305,46 +293,46 @@ void runScript(bitset<l> &script, unsigned long long pointer, unsigned long long
 	
 	while(pointer <= length) { // ---------------- BEGIN LOOP
 	
-		/*short gap = 0; debug
-		for (short i=0;i<=7;i++) {
-			if (i==v)
-				cout << "[" << variable[i] << "] : ";
-			else {
-				if (i > v && variable[i] == 0 && gap != -1) {
-					++gap;
-				} else {
-					if (gap > 0) {
-						cout << "..";
-						gap = -1;
+		if (DEBUG) {
+			short gap = 0;
+			for (short i=0;i<=7;i++) {
+				if (i==v)
+					cout << "[" << variable[i] << "] : ";
+				else {
+					if (i > v && variable[i] == 0 && gap != -1) {
+						++gap;
+					} else {
+						if (gap > 0) {
+							cout << "..";
+							gap = -1;
+						}
+						cout << variable[i] << " : ";
 					}
-					cout << variable[i] << " : ";
 				}
 			}
+			if (pointer<l)
+				cout << "*" << pointer/4;
+			cout << " ";
+			short i = at(script, pointer);
+			if (value) {
+				cout << "#";
+				cout << i;
+			}
+			else if (pointer<l) {
+				char c;
+				mapTo(c, i);
+				cout << "'" << c << "'";
+			}
+			
+			if (ilocation != 0 || ilength != 0) {
+				cout << " [" << ilocation;
+				cout << "-" << ilength;
+				cout << "=" << range(script,ilocation,ilength);
+				cout << "]";
+			}
+			
+			cout << endl;
 		}
-		if (pointer<l)
-			cout << "*" << pointer/4;
-		cout << " ";
-		short i = at(script, pointer);
-		if (value) {
-			cout << "#";
-			cout << i;
-		}
-		else if (pointer<l) {
-			char c;
-			mapTo(c, i);
-			cout << "'" << c << "'";
-		}
-		
-		if (ilocation != 0 || ilength != 0) {
-			cout << " [" << ilocation;
-			cout << "-" << ilength;
-			cout << "=" << range(script,ilocation,ilength);
-			cout << "]";
-		}
-		
-		cout << endl;
-		
-		debug */
 	
 		if (value) {
 			variable[v]<<=4;
@@ -492,7 +480,7 @@ unsigned short r(unsigned short value) {
 void packet_output(long long unsigned output) {
 	cout << nouppercase;
 	cout << (char)(output);
-	//cout << endl; debug
+	if (DEBUG) cout << endl;
 	cout << flush;
 	cout << uppercase;
 }
