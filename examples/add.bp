@@ -1,0 +1,33 @@
+'
+Because the current compiler-interpreter uses ascii input rather than hex or dec, the program's behavior seems wierd.
+However, this program does successfully add the ascii codes of the first and second characters you put in.
+'
+
+'@00' #1,# 4#0@ ____ ____ '[00-3F]'
+      ____ ____ ____ ____ '[40-7F]'
+	  ____ ____ ____ ____ '[80-BF]'
+	  ____ ____ ____ ____ '[C0-FF]'
+'@40' #4#0 ,#F{ [}&, &---
+	  #8#0 ,#F{ [}&, &---
+'@5A' #C#0 ,#F{ &,&
+	  #4#0 ,#F: ,
+	  #8#0 ,#F:
+	  ^},&
+	  #8#0 ,#F{ &,&
+	  #4#0 ,#F: ,
+	  #8#0 ,#F:
+	  &,#1 <},
+	  #A #C@
+	  #1,# 0#C# B@
+'@AC' #4#0 ,#F{ &,&- ----
+	  #C#0 ,#F: }&,& ----
+	  #1,# 5#A@ ---- ----
+'@CB' #C#0,#F:]
+
+'
+To add two numbers:
+ - XOR both values; this is the half-sum
+ - AND both values, shift the bits here by one so that they are twice as large
+ - Sum the half-sum and the carry
+ - When the carry is 0, end.
+'
