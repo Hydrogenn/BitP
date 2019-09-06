@@ -1,12 +1,13 @@
 #include <iostream> //this allows more advanced input/output
 #include <fstream> //allows access to files
 #include <bitset> //stores the bits
+#include <string> //contains to_string().
 #include <string.h> //contains memset.
 #include <random> //generating arbitrary commands.
 using namespace std;
 
 int const l = 16384; //maximum program size. change if you need to run programs bigger than 2 kb (after compilation).
-void runScript(bitset<l> &script, unsigned long long &pointer, unsigned long long &length);
+void runScript(bitset<l> &script, unsigned long long pointer, unsigned long long &length);
 short at(bitset<l> data, int i);
 unsigned long range(bitset<l> data, int i, short length);
 bitset<l> setRange(bitset<l> data, unsigned long value, int i, short length);
@@ -22,7 +23,7 @@ int main() {
 	cout << "Enter the name of the script you would like to run." << endl;
 	string filename;
 	cin >> filename;
-	cin.ignore();
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	ifstream scriptFile (filename.c_str());
 	string scriptString;
 	string line;
@@ -37,14 +38,14 @@ int main() {
 			script = compileScript(scriptString,length);
 			runScript(script,0,length);
 			cout << "Done, hit enter to continue";
-		} catch (int e) {
+		} catch (const std::invalid_argument& e) {
 			cerr << "Tried to compile an incomplete program!" << endl;
+			cerr << e.what() << endl;
 			cout << "Failed to load. Hit enter to continue." << endl;
 		}
 	}
 	else {
 		cout << "The file could not be opened. Hit enter to continue" << endl;
-		cin.ignore();
 	};
 	cin.ignore();
 }
@@ -115,7 +116,8 @@ bitset<l> compileScript(string script,unsigned long long &length) {
 				break;
 			case '*':
 				if (!skipping && !masked) {
-					throw 1;
+					string argument_prefix = "TODO found";
+					throw std::invalid_argument( argument_prefix );
 				}
 				break;
 			case '\'':
@@ -159,7 +161,117 @@ bitset<l> compileScript(string script,unsigned long long &length) {
 	return compiled;
 }
 
-void runScript(bitset<l> &script, unsigned long long &pointer, unsigned long long &length) {
+void mapTo(char &c, short i) {
+	
+	switch (i) {
+		case 0x0:
+			c = '#';
+			break;
+		case 0x1:
+			c = ',';
+			break;
+		case 0x2:
+			c = '{';
+			break;
+		case 0x3:
+			c = '}';
+			break;
+		case 0x4:
+			c = '~';
+			break;
+		case 0x5:
+			c = '^';
+			break;
+		case 0x6:
+			c = '&';
+			break;
+		case 0x7:
+			c = '/';
+			break;
+		case 0x8:
+			c = '<';
+			break;
+		case 0x9:
+			c = '>';
+			break;
+		case 0xA:
+			c = '@';
+			break;
+		case 0xB:
+			c = '=';
+			break;
+		case 0xC:
+			c = ':';
+			break;
+		case 0xD:
+			c = '%';
+			break;
+		case 0xE:
+			c = '[';
+			break;
+		case 0xF:
+			c = ']';
+			break;
+	}
+	
+}
+
+void mapFrom(char c, short &mask) {
+	
+	switch (c) {
+		case '#':
+			mask = 0x0;
+			break;
+		case ',':
+			mask = 0x1;
+			break;
+		case '{':
+			mask = 0x2;
+			break;
+		case '}':
+			mask = 0x3;
+			break;
+		case '~':
+			mask = 0x4;
+			break;
+		case '^':
+			mask = 0x5;
+			break;
+		case '&':
+			mask = 0x6;
+			break;
+		case '/':
+			mask = 0x7;
+			break;
+		case '<':
+			mask = 0x8;
+			break;
+		case '>':
+			mask = 0x9;
+			break;
+		case '@':
+			mask = 0xA;
+			break;
+		case '=':
+			mask = 0xB;
+			break;
+		case ':':
+			mask = 0xC;
+			break;
+		case '%':
+			mask = 0xD;
+			break;
+		case '[':
+			mask = 0xE;
+			break;
+		case ']':
+			mask = 0xF;
+			break;
+	}
+	
+}
+
+void runScript(bitset<l> &script, unsigned long long pointer, unsigned long long &length) {
 	unsigned long long variable[8] = {0}; //values
 	unsigned char v = 0; //points to the value being currently used
 	bool value = false; //tells whether the pointer is looking at a command or a value, for the '#' VALUE command
@@ -173,26 +285,48 @@ void runScript(bitset<l> &script, unsigned long long &pointer, unsigned long lon
 	1 - cin
 	*/
 	
-	while(pointer < length) { // ---------------- BEGIN LOOP
+	while(pointer <= length) { // ---------------- BEGIN LOOP
 	
-		/*debug this code is commented out in the default compilation.
+		/*short gap = 0; debug
 		for (short i=0;i<=7;i++) {
 			if (i==v)
 				cout << "[" << variable[i] << "] : ";
-			else
-				cout << variable[i] << " : ";
+			else {
+				if (i > v && variable[i] == 0 && gap != -1) {
+					++gap;
+				} else {
+					if (gap > 0) {
+						cout << "..";
+						gap = -1;
+					}
+					cout << variable[i] << " : ";
+				}
+			}
 		}
 		if (pointer<l)
 			cout << "*" << pointer/4;
 		cout << " ";
-		if (value) cout << "#";
-		if (pointer<l) cout << at(script,pointer);
-		cout << " [" << ilocation;
-		cout << "-" << ilength;
-		cout << "=" << range(script,ilocation,ilength);
-		cout << "]";
+		short i = at(script, pointer);
+		if (value) {
+			cout << "#";
+			cout << i;
+		}
+		else if (pointer<l) {
+			char c;
+			mapTo(c, i);
+			cout << "'" << c << "'";
+		}
+		
+		if (ilocation != 0 || ilength != 0) {
+			cout << " [" << ilocation;
+			cout << "-" << ilength;
+			cout << "=" << range(script,ilocation,ilength);
+			cout << "]";
+		}
+		
 		cout << endl;
-		debug*/
+		
+		debug */
 	
 		if (value) {
 			variable[v]<<=4;
@@ -216,7 +350,7 @@ void runScript(bitset<l> &script, unsigned long long &pointer, unsigned long lon
 				case 0x3: //} COMMIT
 					script = setRange(script,variable[v],ilocation,ilength);
 					if (ilocation + ilength >= length) {
-						length = ilocation + ilength
+						length = ilocation + ilength;
 					}
 					break;
 				case 0x4: //~ NOT
@@ -338,6 +472,7 @@ unsigned short r(unsigned short value) {
 void packet_output(long long unsigned output) {
 	cout << nouppercase;
 	cout << (char)(output);
+	//cout << endl; debug
 	cout << flush;
 	cout << uppercase;
 }

@@ -1,0 +1,29 @@
+'
+Debug display test.
+This was designed to make sure the debug menu works.
+It also helps as a nice primer to showing other people how it works.
+
+The first 8 values listed are the DISC values, the only internal variables you are allowed to work with.
+All of them default to 0, so are only displayed if their value is non-zero. That means you may see less than 8 values to start.
+The value currently selected is displayed in [] brackets.
+The next value is the location of the pointer on the program. This is marked with a * asterisk.
+The next value is the instruction at the pointer on the program. This is marked in 'single quotation marks'.
+If the instruction preceeding it was a # VALUE, then it automatically displays the hex value under the cursor instead of the interpreted command value.
+After that is the MEMORY information. If this is at the default values of 0-0, then nothing is referenced.
+Otherwise, it displays the FIRST memory index, the memory length, and the value in this range, all within [] brackets seperated by - or =.
+'
+
+#1,#2,#3,#4,#5,#6,#7,#8 limit of eight items on the disc
+,,,,, rotate by five on the disc
+/// perform 'OR' operation three times
+&,& perform 'AND' and then go forward and 'AND' with a zero (this clears the disc value)
+#4,#3 get the second nybble
+{ remember this nybble
+&~ set the memory head to '-1'
+} change this nybble to what is on the memory head (in this case '-1' will overflow to 'F')
+# '[0] : ..6 : 7 : 8 : *2A "#" [4-3=0]'
+
+'
+If you want your entire debug log to be visible, add any character at the end.
+Preferably # VALUE, as it does not interfere with I/O functions, nor will it ever interfere with program operations the way @ IF-GOTO or = IF-THREAD would.
+'

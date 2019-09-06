@@ -1,0 +1,16 @@
+#0 very start
+,#7 get eight bits
+{[} remember input commit
+&,& clear tape
+#1,@ go to start
+
+'
+If you want a challenge, you can see how you would go about exiting this program.
+The easiest solution requires you to queue multiple commands in a row;
+first change the index of #0,#7 to a different byte, then change that new byte to what you want it to be.
+'
+
+'
+If you are in text mode, "G" will crash the program; it will replace #0 with "~/", putting the cursor over a really large index.
+It is looking at around the 64th petabyte. Needless to say, the program is not defined there.
+'
