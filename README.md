@@ -5,18 +5,18 @@ It was designed to resemble (and be practical as) an assembly language, but comp
 It ended up being more of an esolang...
 
 #### Windows
- - The program (bitp\_7.exe) reads any file you give it. You must include the file extension.
- - A debug version has been included (bitp\_7\_debug.exe) which will print out information at every code point.
+ - The program (bitp\_7.exe) must be run in command prompt, with the file you intend to run as the first argument. You must include the file extension.
+ - If you want to run in debug mode, append "-d" to your arguments.
  - The .dll files must be put in the same directory as the .exe you wish to run.
 
 #### MacOS
  - The program (bitp-mac) reads any file you give it. You must include the file extension.
- - There is no debug build for MacOS.
+ - If you want to run in debug mode, append "-d" to your arguments.
  - Credit to Rayzr522 for porting.
  
 #### Linux
  - The program (bitp-linux) reads any file you give it. You must include the file extension.
- - There is no debug build for Linux.
+ - If you want to run in debug mode, append "-d" to your arguments.
  - Credit to Rayzr522 for porting.
 
 bitp.cpp contains the source code. If you are having problems with the above, you can attempt to compile this yourself. This will require C++11.
